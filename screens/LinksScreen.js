@@ -1,7 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
-import {ExpoLinksView} from '@expo/samples';
-import {SafeAreaView} from 'react-navigation'
+import {ScrollView, StyleSheet, StatusBar} from 'react-native';
 
 export default class LinksScreen extends React.Component {
     static navigationOptions = {
@@ -10,15 +8,18 @@ export default class LinksScreen extends React.Component {
 
     render() {
         return (
-            <SafeAreaView>
-                <ScrollView style={styles.container}>
-                    {/* Go ahead and delete ExpoLinksView and replace it with your
+            <ScrollView style={styles.container}>
+                <StatusBar
+                    barStyle = "light-content"
+                    hidden = {false}
+                    backgroundColor = "#00BCD4"
+                    translucent = {true}
+                    networkActivityIndicatorVisible = {true}
+                />
+                {/* Go ahead and delete ExpoLinksView and replace it with your
            * content, we just wanted to provide you with some helpful links */}
-                    <view>
-                        <text>This is a test</text>
-                    </view>
-                </ScrollView>
-            </SafeAreaView>
+            </ScrollView>
+
         );
     }
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Animated, View, Text, StyleSheet} from 'react-native';
+import {Animated, View, Text, StyleSheet, ToolbarAndroid, Platform} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {TabView, TabBar, SceneMap, type Route, type NavigationState} from 'react-native-tab-view';
 import Home from '../screens/HomeScreen';
@@ -14,7 +14,7 @@ type State = NavigationState <
     } >
     >;
 
-export default class BottomBarIconExample extends React.Component<*, State> {
+export default class BottomBar extends React.Component<*, State> {
     static title = 'Custom indicator';
     static backgroundColor = '#263238';
     static appbarElevation = 4;
@@ -23,17 +23,17 @@ export default class BottomBarIconExample extends React.Component<*, State> {
         index: 0,
         routes: [
             {
-                key: 'article',
+                key: 'home',
                 icon: 'ios-home',
                 color: '#F44336',
             },
             {
-                key: 'contacts',
+                key: 'camera',
                 icon: 'ios-camera',
                 color: '#3F51B5',
             },
             {
-                key: 'albums',
+                key: 'settings',
                 icon: 'ios-settings',
                 color: '#4CAF50',
             },
@@ -112,6 +112,10 @@ export default class BottomBarIconExample extends React.Component<*, State> {
         return null;
     };
 
+    _getKey = ({route}) => {
+        return (route.key);
+    }
+
     _renderTabBar = props => (
         <TabBar
             {...props}
@@ -123,21 +127,34 @@ export default class BottomBarIconExample extends React.Component<*, State> {
     );
 
     _renderScene = SceneMap({
-        article: Home,
-        contacts: Camera,
-        albums: Settings,
+        home: Home,
+        camera: Camera,
+        settings: Settings,
     });
 
     render() {
         return (
-            <TabView
-                style={this.props.style}
-                navigationState={this.state}
-                renderScene={this._renderScene}
-                renderTabBar={this._renderTabBar}
-                tabBarPosition="bottom"
-                onIndexChange={this._handleIndexChange}
-            />
+            <View style={styles.container}>
+                { Platform.OS === 'android' && Platform.Version >= 20 ?
+                    <ToolbarAndroid
+                        style={{
+                            height: 56,
+                            backgroundColor: "#673AB7",
+                            elevation: 4,
+                        }}
+                        titleColor="white"
+                        title={this._getKey}
+                    />
+                    : null }
+                <TabView
+                    style={this.props.style}
+                    navigationState={this.state}
+                    renderScene={this._renderScene}
+                    renderTabBar={this._renderTabBar}
+                    tabBarPosition="bottom"
+                    onIndexChange={this._handleIndexChange}
+                />
+            </View>
         );
     }
 }
