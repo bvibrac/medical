@@ -114,7 +114,7 @@ export default class BottomBar extends React.Component<*, State> {
 
     _getKey = ({route}) => {
         return (route.key);
-    }
+    };
 
     _renderTabBar = props => (
         <TabBar
@@ -134,18 +134,6 @@ export default class BottomBar extends React.Component<*, State> {
 
     render() {
         return (
-            <View style={styles.container}>
-                { Platform.OS === 'android' && Platform.Version >= 20 ?
-                    <ToolbarAndroid
-                        style={{
-                            height: 56,
-                            backgroundColor: "#673AB7",
-                            elevation: 4,
-                        }}
-                        titleColor="white"
-                        title={this._getKey}
-                    />
-                    : null }
                 <TabView
                     style={this.props.style}
                     navigationState={this.state}
@@ -154,10 +142,22 @@ export default class BottomBar extends React.Component<*, State> {
                     tabBarPosition="bottom"
                     onIndexChange={this._handleIndexChange}
                 />
-            </View>
         );
     }
 }
+
+{/*<View style={styles.container}>*/}
+    {/*{ Platform.OS === 'android' && Platform.Version >= 20 ?*/}
+        {/*<ToolbarAndroid*/}
+            {/*style={{*/}
+                {/*height: 56,*/}
+                {/*backgroundColor: "#673AB7",*/}
+                {/*elevation: 4,*/}
+            {/*}}*/}
+        {/*/>*/}
+        {/*: null }*/}
+// </View>
+
 
 const styles = StyleSheet.create({
     tabbar: {
