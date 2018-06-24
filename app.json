@@ -21,7 +21,14 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+	"supportsTablet": true,
+	"bundleIdentifier": "com.epitech.medical",
+    },
+    "android": {
+	"package": "com.epitech.medical",
+    },
+      "packagerOpts": {
+	  "nonPersistent": true,
+      }
   }
 }
