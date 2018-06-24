@@ -5,7 +5,7 @@ export default class LinksScreen extends React.Component {
     static navigationOptions = {
         title: 'Camera',
     };
-    
+
 
     render() {
         return (

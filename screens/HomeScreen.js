@@ -1,139 +1,127 @@
 import React, {Component} from 'react';
-import {
-    ActivityIndicator,
-    Alert,
-    ListView,
-    Platform,
-    StyleSheet,
-    Text,
-    TextInput,
-    ToolbarAndroid,
-    View
-} from 'react-native';
+import {ActivityIndicator, ListView, Platform, StyleSheet, Text, TextInput, ToolbarAndroid, View} from 'react-native';
+import {createStackNavigator} from 'react-navigation'
+import InfoScreen from "./InfoScreen";
 
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
 
-        constructor(props) {
+    GetListViewItem = (id) => {
+        this.props.navigation.navigate('Info', {cis: id});
+    };
+    ListViewItemSeparator = () => {
+        return (
+            <View
+                style={{
+                    height: .5,
+                    width: "100%",
+                    backgroundColor: "#000",
+                }}
+            />
+        );
+    }
 
-            super(props);
+    constructor(props) {
 
-            this.state = {
+        super(props);
 
-                isLoading: true,
-                text: '',
+        this.state = {
 
-            }
+            isLoading: true,
+            text: '',
 
-            this.arrayholder = [] ;
         }
 
-        componentDidMount() {
+        this.arrayholder = [];
+    }
 
-            return fetch('http://192.168.1.47:8000/api/medoc', {
-                method: 'GET'
-            })
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        isLoading: false,
-                        dataSource: ds.cloneWithRows(responseJson),
-                    }, function() {
+    componentDidMount() {
 
-                        // In this block you can do something with new state.
-                        this.arrayholder = responseJson ;
+        return fetch('http://192.168.1.47:8000/api/medoc', {
+            method: 'GET'
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    isLoading: false,
+                    dataSource: ds.cloneWithRows(responseJson),
+                }, function () {
 
-                    });
-                })
-                .catch((error) => {
-                    console.error(error);
+                    // In this block you can do something with new state.
+                    this.arrayholder = responseJson;
+
                 });
-
-        }
-
-        GetListViewItem (fruit_name) {
-
-            Alert.alert(fruit_name);
-
-        }
-
-        SearchFilterFunction(text){
-
-            const newData = this.arrayholder.filter(function(item){
-                const itemData = item.denomination.toUpperCase()
-                const textData = text.toUpperCase()
-                return itemData.indexOf(textData) > -1
             })
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(newData),
-                text: text
-            })
-        }
+            .catch((error) => {
+                console.error(error);
+            });
 
-        ListViewItemSeparator = () => {
+    }
+
+    SearchFilterFunction(text) {
+
+        const newData = this.arrayholder.filter(function (item) {
+            const itemData = item.denomination.toUpperCase()
+            const textData = text.toUpperCase()
+            return itemData.indexOf(textData) > -1
+        })
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(newData),
+            text: text
+        })
+    }
+
+    render() {
+        if (this.state.isLoading) {
             return (
-                <View
-                    style={{
-                        height: .5,
-                        width: "100%",
-                        backgroundColor: "#000",
-                    }}
-                />
-            );
-        }
-
-
-        render() {
-            if (this.state.isLoading) {
-                return (
-                    <View style={{flex: 1, paddingTop: 20}}>
-                        <ActivityIndicator />
-                    </View>
-                );
-            }
-
-            return (
-
-                <View style={styles.MainContainer}>
-                    <View>
-                        { Platform.OS === 'android' ?
-                            <ToolbarAndroid
-                                style={{
-                                    height: 24,
-                                    backgroundColor: "blue",
-                                    elevation: 4,
-                                }}
-                            />
-                            : null }
-                    </View>
-
-                    <TextInput
-                        style={styles.TextInputStyleClass}
-                        onChangeText={(text) => this.SearchFilterFunction(text)}
-                        value={this.state.text}
-                        underlineColorAndroid='transparent'
-                        placeholder="Search Here"
-                    />
-
-                    <ListView
-
-                        dataSource={this.state.dataSource}
-
-                        renderSeparator= {this.ListViewItemSeparator}
-
-                        renderRow={(rowData) => <Text style={styles.rowViewContainer}
-
-                                                      onPress={this.GetListViewItem.bind(this, rowData.denomination)} >{rowData.denomination}</Text>}
-
-                        enableEmptySections={true}
-
-                        style={{marginTop: 10}}
-
-                    />
-
+                <View style={{flex: 1, paddingTop: 20}}>
+                    <ActivityIndicator/>
                 </View>
             );
         }
+
+        return (
+
+            <View style={styles.MainContainer}>
+                <View>
+                    {Platform.OS === 'android' ?
+                        <ToolbarAndroid
+                            style={{
+                                height: 24,
+                                backgroundColor: "blue",
+                                elevation: 4,
+                            }}
+                        />
+                        : null}
+                </View>
+
+                <TextInput
+                    style={styles.TextInputStyleClass}
+                    onChangeText={(text) => this.SearchFilterFunction(text)}
+                    value={this.state.text}
+                    underlineColorAndroid='transparent'
+                    placeholder="Search Here"
+                />
+
+                <ListView
+
+                    dataSource={this.state.dataSource}
+
+                    renderSeparator={this.ListViewItemSeparator}
+
+                    renderRow={(rowData) => <Text style={styles.rowViewContainer}
+
+                                                  onPress={this.GetListViewItem.bind(this, rowData.cis)}>{rowData.denomination}</Text>}
+
+                    enableEmptySections={true}
+
+                    style={{marginTop: 10}}
+
+                />
+
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -155,3 +143,18 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF"
     },
 });
+
+export default createStackNavigator({
+    Home: {
+        screen: HomeScreen,
+        navigationOptions: {
+            header: null
+        },
+    },
+    Info: {
+        screen: InfoScreen,
+        navigationOptions: {
+
+        }
+    },
+})
