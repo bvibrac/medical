@@ -60,7 +60,7 @@ export default class HomeScreen extends Component {
         SearchFilterFunction(text){
 
             const newData = this.arrayholder.filter(function(item){
-                const itemData = item.fruit_name.toUpperCase()
+                const itemData = item.denomination.toUpperCase()
                 const textData = text.toUpperCase()
                 return itemData.indexOf(textData) > -1
             })
@@ -95,6 +95,17 @@ export default class HomeScreen extends Component {
             return (
 
                 <View style={styles.MainContainer}>
+                    <View>
+                        { Platform.OS === 'android' ?
+                            <ToolbarAndroid
+                                style={{
+                                    height: 24,
+                                    backgroundColor: "blue",
+                                    elevation: 4,
+                                }}
+                            />
+                            : null }
+                    </View>
 
                     <TextInput
                         style={styles.TextInputStyleClass}
