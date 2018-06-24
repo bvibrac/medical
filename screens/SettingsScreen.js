@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import {ScrollView, StatusBar, StyleSheet, Text, View, Platform} from 'react-native'
-import {ExpoConfigView} from '@expo/samples';
+import React from 'react';
+import {ScrollView, ToolbarAndroid, StyleSheet, Text, View, Platform} from 'react-native'
 
 export default class SettingsScreen extends React.Component {
     static navigationOptions = {
@@ -10,13 +9,17 @@ export default class SettingsScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar
-                    barStyle="light-content"
-                    hidden={false}
-                    backgroundColor="#00BCD4"
-                    translucent={true}
-                    networkActivityIndicatorVisible={true}
-                />
+                <View>
+                    { Platform.OS === 'android' ?
+                        <ToolbarAndroid
+                            style={{
+                                height: 24,
+                                backgroundColor: "blue",
+                                elevation: 4,
+                            }}
+                        />
+                        : null }
+                </View>
                 <ScrollView style={styles.container}>
                     <Text style={styles.starttext}>Ceci est un test</Text>
                 </ScrollView>

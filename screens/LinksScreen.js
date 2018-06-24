@@ -1,23 +1,26 @@
 import React from 'react';
-import {ScrollView, StyleSheet, StatusBar} from 'react-native';
+import {ScrollView, StyleSheet, ToolbarAndroid, Platform, View} from 'react-native';
 
 export default class LinksScreen extends React.Component {
     static navigationOptions = {
         title: 'Camera',
     };
 
+
     render() {
         return (
             <ScrollView style={styles.container}>
-                <StatusBar
-                    barStyle = "light-content"
-                    hidden = {false}
-                    backgroundColor = "#00BCD4"
-                    translucent = {true}
-                    networkActivityIndicatorVisible = {true}
-                />
-                {/* Go ahead and delete ExpoLinksView and replace it with your
-           * content, we just wanted to provide you with some helpful links */}
+                <View>
+                    { Platform.OS === 'android' ?
+                        <ToolbarAndroid
+                            style={{
+                                height: 24,
+                                backgroundColor: "blue",
+                                elevation: 4,
+                            }}
+                        />
+                        : null }
+                </View>
             </ScrollView>
 
         );
