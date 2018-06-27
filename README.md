@@ -1,3 +1,8 @@
-Apk: https://exp-shell-app-assets.s3-us-west-1.amazonaws.com/android%2F%40b_vibrac%2Ftest-6de4cc7b-77fa-11e8-bad2-0a580a78020c-signed.apk
+There is no IOS because i'm not a ios develloper for IOS
 
-there is no IOS because i'm not a ios develloper for IOS
+After clone this repo, you have to run: "npm install" then "exp start" or "exp run:<device os>"
+  
+  When you start the app, you will see that there is 3 tab: 
+    -first tab: it's an list of medicine with a search bar, that will filter the list.
+    -second tab: it's a QR code reader when you will scan a medicine's QRcode it will display the information of this medicine.
+    -Third tab: this is the user gestion, with Login, register and profile.
