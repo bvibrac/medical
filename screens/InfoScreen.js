@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  ActivityIndicator, StyleSheet, Text, View, Alert,
+  ActivityIndicator, Alert, StyleSheet, Text, View,
 } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -29,7 +29,7 @@ export default class InfoScreen extends Component {
   }
 
   componentDidMount() {
-    return fetch(`http://192.168.1.47:8000/api/medoc/cis/${this.props.navigation.getParam('cis')}`, {
+    return fetch(`https://medical-server-taurhzkfge.now.sh/api/medoc/cis/${this.props.navigation.getParam('cis')}`, {
       method: 'GET',
     })
       .then(response => response.json())
@@ -67,14 +67,25 @@ export default class InfoScreen extends Component {
                     Administration:
           {this.state.data.administration}
         </Text>
-        <Text style={styles.text}>
-                    Prix:
-          {this.state.data.prix}
-        </Text>
-        <Text style={styles.text}>
-                    Remboursement:
-          {this.state.data.remboursement}
-        </Text>
+        {
+                    (this.state.data.prix)
+                    && (
+                    <Text style={styles.text}>
+                            Prix:
+                      {this.state.data.prix}
+                    </Text>
+                    )
+                }
+        {
+                    (this.state.data.remboursement)
+                    && (
+                    <Text style={styles.text}>
+                            Remboursement:
+                      {this.state.data.remboursement}
+                    </Text>
+                    )
+
+                }
       </View>);
   }
 }

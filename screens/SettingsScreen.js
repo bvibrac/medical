@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import {
-  StyleSheet, TextInput, View, Alert, Button, Text,
+  Alert, Button, StyleSheet, Text, TextInput, View,
 } from 'react-native';
 
 import { createStackNavigator } from 'react-navigation';
@@ -19,16 +19,18 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 
+  ButtonStyle: {
+    paddingBottom: 10,
+  },
+
   TextInputStyleClass: {
 
     textAlign: 'center',
     marginBottom: 7,
     height: 40,
     borderWidth: 1,
-    // Set border Hex Color Code Here.
     borderColor: '#2196F3',
 
-    // Set border Radius.
     borderRadius: 5,
 
   },
@@ -58,11 +60,11 @@ class SettingsScreen extends Component {
     };
 
     UserLoginFunction = () => {
-      const { UserEmail } = this.state;
-      const { UserPassword } = this.state;
+      // const { fctUserEmail } = this.state.UserEmail;
+      // const { fctUserPassword } = this.state.UserPassword;
 
 
-      fetch('http://192.168.1.47:8000/api/user/signin', {
+      fetch('https://medical-server-taurhzkfge.now.sh/api/user/signin', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -70,20 +72,19 @@ class SettingsScreen extends Component {
         },
         body: JSON.stringify({
 
-          email: UserEmail,
+          mail: this.state.UserEmail,
 
-          password: UserPassword,
+          password: this.state.UserPassword,
 
         }),
 
       }).then(response => response.json())
         .then((responseJson) => {
-          // If server response message same as Data Matched
-          if (responseJson === 'Data Matched') {
+          if (responseJson.success) {
             // Then open Profile activity and send user email to profile activity.
-            this.props.navigation.navigate('Second', { Email: UserEmail });
+            this.props.navigation.navigate('Second', { Email: this.state.UserEmail });
           } else {
-            Alert.alert(responseJson);
+            Alert.alert(responseJson.message);
           }
         }).catch((error) => {
           Alert.alert(error);
@@ -95,17 +96,15 @@ class SettingsScreen extends Component {
 
         <View style={styles.MainContainer}>
           <Text style={styles.TextComponentStyle}>
-User Login Form
+                    User Login Form
           </Text>
 
           <TextInput
 
-                    // Adding hint in Text Input using Place holder.
             placeholder="Enter User Email"
 
             onChangeText={UserEmail => this.setState({ UserEmail })}
 
-                    // Making the Under line Transparent.
             underlineColorAndroid="transparent"
 
             style={styles.TextInputStyleClass}
@@ -113,12 +112,10 @@ User Login Form
 
           <TextInput
 
-                    // Adding hint in Text Input using Place holder.
             placeholder="Enter User Password"
 
             onChangeText={UserPassword => this.setState({ UserPassword })}
 
-                    // Making the Under line Transparent.
             underlineColorAndroid="transparent"
 
             style={styles.TextInputStyleClass}
@@ -126,7 +123,12 @@ User Login Form
             secureTextEntry
           />
 
-          <Button title="Click Here To Login" onPress={this.UserLoginFunction} color="#2196F3" />
+          <Button
+            title="Click Here To Login"
+            onPress={this.UserLoginFunction}
+            color="#2196F3"
+            style={styles.ButtonStyle}
+          />
           <Button title="Register" onPress={this.UserRegister} />
         </View>
 
@@ -141,6 +143,5 @@ export default createStackNavigator(
     Second: { screen: ProfileScreen },
 
     Third: { screen: RegisterScreen },
-
   },
 );

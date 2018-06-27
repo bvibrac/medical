@@ -41,7 +41,7 @@ class LinksScreen extends React.Component {
         LayoutAnimation.spring();
         let myStr = result.data;
         myStr = myStr.substring(4, 17);
-        fetch(`http://192.168.1.47:8000/api/medoc/cip13/${myStr}`, {
+        fetch(`https://medical-server-taurhzkfge.now.sh/api/medoc/cip13/${myStr}`, {
           method: 'GET',
         })
           .then(response => response.json())
@@ -55,8 +55,7 @@ class LinksScreen extends React.Component {
                 Alert.alert('No medicament found');
               }
             });
-          })
-          .catch((error) => {
+          }).catch((error) => {
             // console.error(error);
             Alert.alert(error);
           });

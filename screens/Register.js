@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import {
-  StyleSheet, TextInput, View, Alert, Button, Text,
+  Alert, Button, StyleSheet, Text, TextInput, View,
 } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Register extends Component {
+export default class Register extends React.Component {
   constructor(props) {
     super(props);
 
@@ -32,71 +32,77 @@ export default class Register extends Component {
     };
   }
 
-  UserRegistrationFunction() {
-    const mail = this.state.UserEmail;
-    const pass = this.state.UserPassword;
+    UserRegistrationFunction = () => {
+      // const  fctUserEmail  = this.state.UserEmail;
+      // const  fctUserPassword  = this.state.UserPassword;
+      const { UserEmail } = this.state;
+      const { UserPassword } = this.state;
 
-    fetch('http://192.168.1.47:8000/api/user/signup', {
-      method: 'POST',
-      body: JSON.stringify({
+      fetch('https://medical-server-taurhzkfge.now.sh/api/user/signup', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
 
-        email: mail.toString(),
+          mail: UserEmail,
 
-        password: pass.toString(),
+          password: UserPassword,
 
-      }),
+        }),
+      }).then(response => response.json())
+        .then((responseJson) => {
+          if (responseJson.success) {
+            Alert.alert('Successfully created');
+            this.props.navigation.goBack();
+          } else Alert.alert(responseJson.message);
+        }).catch((error) => {
+          Alert.alert(error);
+        });
+    };
 
-    }).then(response => response.json())
-      .then((responseJson) => {
-        Alert.alert(responseJson);
-      }).catch((error) => {
-        Alert.alert(error);
-      });
-  }
+    render() {
+      return (
 
-  render() {
-    return (
+        <View style={styles.MainContainer}>
 
-      <View style={styles.MainContainer}>
+          <Text style={{
+            fontSize: 20, color: '#000', textAlign: 'center', marginBottom: 15,
+          }}
+          >
+                    User Registration Form
+          </Text>
+          <TextInput
 
-        <Text style={{
-          fontSize: 20, color: '#000', textAlign: 'center', marginBottom: 15,
-        }}
-        >
-User Registration Form
-        </Text>
-        <TextInput
+            placeholder="Enter User Email"
 
-                    // Adding hint in Text Input using Place holder.
-          placeholder="Enter User Email"
+            onChangeText={(UserEmail) => {
+              this.setState({ UserEmail });
+            }}
 
-          onChangeText={UserEmail => this.setState({ UserEmail })}
+            underlineColorAndroid="transparent"
 
-                    // Making the Under line Transparent.
-          underlineColorAndroid="transparent"
+            style={styles.TextInputStyleClass}
+          />
+          <TextInput
 
-          style={styles.TextInputStyleClass}
-        />
-        <TextInput
+            placeholder="Enter User Password"
 
-                    // Adding hint in Text Input using Place holder.
-          placeholder="Enter User Password"
+            onChangeText={UserPassword => this.setState({ UserPassword })}
 
-          onChangeText={UserPassword => this.setState({ UserPassword })}
+            underlineColorAndroid="transparent"
 
-                    // Making the Under line Transparent.
-          underlineColorAndroid="transparent"
+            style={styles.TextInputStyleClass}
 
-          style={styles.TextInputStyleClass}
+            secureTextEntry
+          />
 
-          secureTextEntry
-        />
-
-        <Button title="Click Here To Register" onPress={this.UserRegistrationFunction} color="#2196F3" />
+          <Button title="Click Here To Register" onPress={this.UserRegistrationFunction} color="#2196F3" />
 
 
-      </View>
+        </View>
 
-    );
-  }
+      );
+    }
 }

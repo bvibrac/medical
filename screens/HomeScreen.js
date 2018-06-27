@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import {
-  ActivityIndicator, ListView, Alert, Platform, StyleSheet, Text, TextInput, ToolbarAndroid, View,
+  ActivityIndicator,
+  Alert,
+  ListView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  ToolbarAndroid,
+  View,
 } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import InfoScreen from './InfoScreen';
@@ -40,7 +48,7 @@ class HomeScreen extends Component {
   }
 
   componentDidMount() {
-    return fetch('http://192.168.1.47:8000/api/medoc', {
+    return fetch('https://medical-server-taurhzkfge.now.sh/api/medoc', {
       method: 'GET',
     })
       .then(response => response.json())
@@ -49,10 +57,11 @@ class HomeScreen extends Component {
         this.setState({
           isLoading: false,
           dataSource: ds.cloneWithRows(responseJson),
+        }, function array() {
+          this.arrayholder = responseJson;
         });
       })
       .catch((error) => {
-        //                console.error(error);
         Alert.alert(error);
       });
   }
@@ -142,6 +151,7 @@ class HomeScreen extends Component {
       );
     }
 }
+
 export default createStackNavigator({
   Home: {
     screen: HomeScreen,
